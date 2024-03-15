@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/my.css' %}">
+    {% block title %}
+    <title>Home</title>
+    {% endblock title %}
+</head>
+
+{% comment %} <body id="bg" style="background-image: url('{% static 'image/wal_image.jpg' %}')"> {% endcomment %}
+
+<body style="background-image: url('{% static 'image/wal_image.jpg' %}'); background-position: center; 
+                        background-repeat: no-repeat;">
+    {% block basecontent %}
+    <h1>Welocme to home page</h1>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col sm-4">
+                <h3>If you are a new user...click the register button</h3>
+                <br>
+                <a href="{% url 'registration' %}" class="btn btn-warning">Register Here</a>
+            </div>
+
+            <div class="col sm-5">
+                <h3>If you are a registered user...click the login button</h3>
+                <br>
+                <a href="{% url 'login' %}" class="btn btn-warning">Login Here</a>
+            </div>
+
+            <div class="col sm-4">
+                <h3>For forgot password...click the forgot pass button</h3>
+                <br>
+                <a href="{% url 'forpass' %}" class="btn btn-danger">Forgot pass</a>
+            </div>
+        </div>
+    </div>
+    {% endblock basecontent %}
+    <script src="{% static 'jsc/jquery.js' %}"></script>
+    <script src="{% static 'jsc/popper.js' %}"></script>
+    <script src="{% static 'jsc/bootstrap.js' %}"></script>
+</body>
+</html>

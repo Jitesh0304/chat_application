@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/my.css' %}">
+    {% block title %}
+    <title>User registration</title>
+    {% endblock title %}
+</head>
+<body id="bg" style="background-image: url('{% static 'image/wal_image.jpg' %}')">
+    {% block formcontent %}
+    <div class="container mt-5">
+        <form action="" method="POST" enctype="multipart/form-data" class="d-inline" novalidate>
+            {% csrf_token %}
+            {% for form in FORM %}
+            <div class="form-group col-3">
+                {{form.label_tag}}  <br>
+                {{form}} {{form.errors|striptags}}
+            </div>
+            {% endfor %}
+            <br>
+            <input type="submit" value="Sign Up" class="btn btn-warning">
+        </form>
+    
+        {% if messages %}
+            {% for msg in messages %}
+                <small {% if msg.tags %} class='{{msg.tags}}' {% endif %}> <h4>{{msg}}</h4></small>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    <script src="{% static 'jsc/jquery.js' %}"></script>
+    <script src="{% static 'jsc/popper.js' %}"></script>
+    <script src="{% static 'jsc/bootstrap.js' %}"></script>
+    {% endblock formcontent %}
+</body>
+</html>

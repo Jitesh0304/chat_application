@@ -1,0 +1,77 @@
+{% extends 'registration/home.html' %}
+
+{% load static %}
+
+{% block title %}
+<title>Profile</title>
+{% endblock title %}
+
+{% block basecontent %}
+        {% comment %} <div class="" id="">
+            <div class="left-side" id="left">
+                <form action="{% url 'createchatgroup' %}" method="POST">
+                    {% csrf_token %}
+                    <input type="text" name="group_name" id="groupName">
+                    <input type="submit" value="Create Group">
+                </form>
+            </div>
+            <div class="right-side" id="right">
+                {% for group in all_groups %}
+                    <li><a href="{% url 'indexpage' group.name%}">{{group.name}}</a></li>
+                {% endfor %}
+            </div>
+        </div> {% endcomment %}
+
+    <h4>Hi {{nm.username}}</h4>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2">
+                {% if users != None %}
+                <h4>List of All Users</h4>
+                <ul class="list-group">
+                    {% for user in users %}
+                    <li class="list-group-item">
+                    <a href="{% url 'userdetails' user.id %}" class="list-group-item list-group-item-action">{{user.username}}</a>
+                    {% comment %} <a href="{% url 'userdetails' user.id %}">{{user.username}}</a> <br>  <br> {% endcomment %}
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+
+                <h4>Chat users</h4>
+                <ul class="list-group">
+                    {% for oneuser in chat_users %}
+                    <li class="list-group-item">
+                    <a href="{% url 'create_chatgroup' nm.id oneuser.id %}" class="list-group-item list-group-item-action">
+                        {{oneuser.username}}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+                <br>
+                <br>
+                {% if messages %}
+                {% for msg in messages %}
+                    {{msg}}
+                {% endfor %}
+                {% endif %}
+            </div>
+
+            <div class="col-md-10">
+                <form action="" method="POST" novalidate>
+                    {% csrf_token %}
+                    {% for foo in FORM %}
+                    <div class="form-group col-3">
+                        {{foo.label_tag}} <br>{{foo}} {{form.errors | striptags}}
+                    </div> <br>
+                    {% endfor %}
+                    <input type="submit" value="Update profile" class="btn btn-warning">
+                </form>
+                <br>
+                <a href="{% url 'chpass' %}" class="btn btn-warning">Password Change</a>
+                <br>
+                <br>
+                <a href="{% url 'logout' %}" class="btn btn-primary">Logout</a>
+            </div>
+        </div>
+    </div>
+{% endblock basecontent %}

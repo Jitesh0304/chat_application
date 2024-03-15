@@ -1,0 +1,44 @@
+{% extends 'registration/create.html' %}
+
+{% load static %}
+
+{% block title %}
+<title>Change password</title>
+{% endblock title %}
+
+{% block formcontent %}
+<div class="container mt-5">
+  <form action="" method="POST" class="d-inline" novalidate>
+      {% csrf_token %}
+      {% for form in FORM %}
+      <div class="form-group col-3">
+          {{form.label_tag}}  <br>
+          {{form}} {{form.errors|striptags}}
+
+          {% comment %} <input type="{{ form.field.widget.input_type }}" class="form-control" required/> {% endcomment %}
+      </div>
+      {% endfor %}
+      <br>
+      <input type="submit" value="Update Password" class="btn btn-danger">
+  </form>
+
+  {% if messages %}
+      {% for msg in messages %}
+          <small {% if msg.tags %} class='{{msg.tags}}' {% endif %}> <h4>{{msg}}</h4></small>
+      {% endfor %}
+  {% endif %}
+
+  {% comment %} {% if FORM.errors %}
+  <div class="alert alert-danger">
+    {% for field in FORM %}
+      {% for error in field.errors %}
+        <strong>{{ error }}</strong>
+      {% endfor %}
+    {% endfor %}
+  </div>
+{% endif %} {% endcomment %}
+<br>
+<br>
+<a href="{% url 'profile' %}" class="btn btn-warning">Back</a>
+</div>
+{% endblock formcontent %}

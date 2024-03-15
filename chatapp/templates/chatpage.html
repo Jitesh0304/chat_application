@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>You joined {{GroupName}}</h2>
+
+
+    <textarea name="" id="chat-display" cols="100" rows="20">
+        {% for chat in chats %}
+            {{chat.content}}
+        {% endfor %}
+    </textarea><br>
+    <input type="text" name="" id="chat-input"><br>
+    <input type="submit" value="Send" id="submitbutton">
+
+    {{GroupName | json_script:'group_name'}}
+</body>
+
+    <script>
+            // 
+            const groupname = JSON.parse(document.getElementById('group_name').textContent)
+            console.log(groupname)
+
+            var ws = new WebSocket('ws://127.0.0.1:8000/ws/awsc/'+groupname+'/')
+
+            ws.onopen = function(event){
+                console.log("WebSocket connected ....", event)
+                }
+
+            ws.onmessage = function(event){
+                console.log(event)
+                // console.log(typeof(event.data))
+                var message = JSON.parse(event.data)
+                // console.log(typeof(message))
+
+                // // if('user' in message){
+                if(message && message.hasOwnProperty('user')){
+                    console.log(message.user)
+                    document.querySelector("#chat-display").value += (message.user +':' + message.msg + '\n')
+                }
+                else{
+                    document.querySelector("#chat-display").value += (message.msg + '\n')
+                }
+                }
+            
+            ws.onerror = function(event){
+                console.log("Error occured ....", event)
+                }
+
+            ws.onclose = function(event){
+                console.log("WebSocket disconnected....", event)
+                }
+
+            
+            document.getElementById("submitbutton").onclick = function(event){
+                const newmessageDom = document.getElementById('chat-input')
+                const newMessage = newmessageDom.value
+
+                ws.send(
+                    JSON.stringify({'msg': newMessage})
+                )
+
+                newmessageDom.value = ''
+                }
+    </script>
+</html>
