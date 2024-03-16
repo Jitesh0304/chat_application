@@ -26,7 +26,7 @@ class UserCreateForm(forms.ModelForm):
 
 
 
-class LoginOtpForm(forms.Form):
+class VerifyForm(forms.Form):
     email = forms.EmailField(label= "Your email", label_suffix=" ",
                              required=True, help_text="Enter your name", widget=forms.EmailInput(attrs={'class':'form-control',
                                                                                                         'id':'uniq'}))

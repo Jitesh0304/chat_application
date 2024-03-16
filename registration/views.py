@@ -1,5 +1,5 @@
 from django.shortcuts import render, HttpResponseRedirect
-from .forms import UserCreateForm, LoginOtpForm, ForgotPassForm, ResetPassForm, UserProfileForm, \
+from .forms import UserCreateForm, VerifyForm, ForgotPassForm, ResetPassForm, UserProfileForm, \
     AdminProfileForm, StyledAuthenticationForm, StyledPasswordChangeForm # CustomAuthenticationForm
 from .utils import send_login_email, send_pass_change_email
 from .models import User
@@ -46,7 +46,7 @@ def newregistration(request):
 
 def otpverify(request):
     if request.method == "POST":
-        fm = LoginOtpForm(request.POST)
+        fm = VerifyForm(request.POST)
         if fm.is_valid():
             otp = fm.cleaned_data['otp']
             email = fm.cleaned_data['email']
@@ -62,7 +62,7 @@ def otpverify(request):
             else:
                 messages.success(request, "Sorry... No user present with this credential")
     else:
-        fm = LoginOtpForm()
+        fm = VerifyForm()
     return render(request, 'registration/otp.html', {'FORM':fm})
 
 
@@ -99,7 +99,7 @@ def userlogin(request):
 @login_required
 def userprofile(request):
     if request.user.is_authenticated:
-        all_user = User.objects.all()
+        all_user = User.objects.all().exclude(is_verified=False)
         # all_groups = Group.objects.filter(members=request.user).annotate(
         #                                     num_members=Count('members')).filter(num_members__gt=3)
         all_groups = Group.objects.filter(members=request.user).annotate(

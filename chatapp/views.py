@@ -1,7 +1,7 @@
-from django.shortcuts import render, HttpResponseRedirect, HttpResponse
+from django.shortcuts import render
 from .models import Chat, Group
 from .forms import GroupForm
-from django.views.decorators.csrf import csrf_protect
+# from django.views.decorators.csrf import csrf_protect
 # from channels.layers import get_channel_layer
 # from asgiref.sync import async_to_sync
 from django.contrib.auth.decorators import login_required
@@ -19,7 +19,7 @@ def create_communitygroup(request):
             # print(gp_form.cleaned_data)
             name = gp_form.cleaned_data['name']
             allmembers = gp_form.cleaned_data['members']
-            new_data = gp_form.save()
+            gp_form.save()
             # allmembers_ids = list(allmembers.values_list('id', flat=True))
             # new_data.members.set(allmembers_ids)
         return render(request, 'group_greeting.html', {'GroupName':name, 'FORM':fm})
@@ -45,7 +45,7 @@ def create_chatgroup(request, sender, receiver):
         userTwo = User.objects.get(id=receiver)
         new_group = Group.objects.create(name = combined_ids)
         group = new_group.members.set([userOne, userTwo])
-    return render(request, 'chatpage.html', {'GroupName':combined_ids, 'chats':chats})
+    return render(request, 'chatpage.html', {'GroupName':combined_ids, 'chats':chats, 'currentUser ':request.user})
 
 
 
@@ -54,5 +54,5 @@ def community_chat(request, gpname):
     chats = []
     group = Group.objects.get(name= gpname)
     chats = Chat.objects.filter(group= group)
-    return render(request, 'chatpage.html', {'GroupName':gpname, 'chats':chats})
+    return render(request, 'chatpage.html', {'GroupName':gpname, 'chats':chats, 'currentUser ':request.user})
 
