@@ -7,27 +7,14 @@
 {% endblock title %}
 
 {% block basecontent %}
-        {% comment %} <div class="" id="">
-            <div class="left-side" id="left">
-                <form action="{% url 'createchatgroup' %}" method="POST">
-                    {% csrf_token %}
-                    <input type="text" name="group_name" id="groupName">
-                    <input type="submit" value="Create Group">
-                </form>
-            </div>
-            <div class="right-side" id="right">
-                {% for group in all_groups %}
-                    <li><a href="{% url 'indexpage' group.name%}">{{group.name}}</a></li>
-                {% endfor %}
-            </div>
-        </div> {% endcomment %}
+
 
     <h4>Hi {{nm.username}}</h4>
     <div class="container">
         <div class="row">
             <div class="col-md-2">
                 {% if users != None %}
-                <h4>List of All Users</h4>
+                <h4>All users profiles</h4>
                 <ul class="list-group">
                     {% for user in users %}
                     <li class="list-group-item">
@@ -47,7 +34,18 @@
                     </li>
                     {% endfor %}
                 </ul>
+                <h4>Chat Groups</h4>
+                <ul class="list-group">
+                    {% for group in all_groups %}
+                    <li class="list-group-item">
+                    <a href="{% url 'community_chat' group.name %}" class="list-group-item list-group-item-action">
+                        {{group.name}}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
                 <br>
+                <a href="{% url 'create_communitygroup' %}" class="btn btn-warning">
+                    Create Group</a>
                 <br>
                 {% if messages %}
                 {% for msg in messages %}

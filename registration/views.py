@@ -3,11 +3,13 @@ from .forms import UserCreateForm, LoginOtpForm, ForgotPassForm, ResetPassForm, 
     AdminProfileForm, StyledAuthenticationForm, StyledPasswordChangeForm # CustomAuthenticationForm
 from .utils import send_login_email, send_pass_change_email
 from .models import User
+from chatapp.forms import GroupForm
+from chatapp.models import Group
 # from django.contrib.auth.forms import PasswordChangeForm, UserChangeForm, AuthenticationForm
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-
+from django.db.models import Count
 
 
 def homepage(request):
@@ -71,7 +73,7 @@ def userlogin(request):
             fm = StyledAuthenticationForm(request= request, data= request.POST)
             # fm = CustomAuthenticationForm(request= request, data= request.POST)
             if fm.is_valid():
-                print('ok')
+                # print('ok')
                 uemail = fm.cleaned_data['username']
                 upass = fm.cleaned_data['password']
                 user = authenticate(username= uemail, password= upass)
@@ -98,6 +100,10 @@ def userlogin(request):
 def userprofile(request):
     if request.user.is_authenticated:
         all_user = User.objects.all()
+        # all_groups = Group.objects.filter(members=request.user).annotate(
+        #                                     num_members=Count('members')).filter(num_members__gt=3)
+        all_groups = Group.objects.filter(members=request.user).annotate(
+                                            num_members=Count('members')).filter(members__gt=3)
         if request.method == "POST":
             if request.user.is_admin == True:
                 fm = AdminProfileForm(request.POST, instance= request.user)
@@ -116,9 +122,12 @@ def userprofile(request):
                 fm = UserProfileForm(instance= request.user)
                 user = None
         return render(request, 'registration/profilepage.html', {'nm': request.user, 'FORM': fm, 'users':user, 
-                                                                 'chat_users':all_user.exclude(email=request.user)})
+                                                                 'chat_users':all_user.exclude(email=request.user),
+                                                                 'all_groups':all_groups})
     else:
         return HttpResponseRedirect('/reg/login/')
+
+
 
 
 @login_required

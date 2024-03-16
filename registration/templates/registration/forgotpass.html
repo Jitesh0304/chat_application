@@ -18,7 +18,9 @@
     {% endfor %}
     <input type="submit" value="Send" class="btn btn-danger">
 </form>
-
+<br>
+<br>
+<a href="{% url 'homepg' %}" class="btn btn-warning">Home page</a>
 
 {% if messages %}
     {% for msg in messages %}

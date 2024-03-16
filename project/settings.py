@@ -40,11 +40,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'registration',
+    'whitenoise.runserver_nostatic',
     'chatapp',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -143,7 +145,6 @@ EMAIL_USE_TLS = True
 AUTH_USER_MODEL = 'registration.User'
 
 STATIC_ROOT = BASE_DIR / 'static/'
-
 
 MEDIA_ROOT = BASE_DIR / 'media/'
 

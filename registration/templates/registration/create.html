@@ -25,7 +25,9 @@
             <br>
             <input type="submit" value="Sign Up" class="btn btn-warning">
         </form>
-    
+        <br>
+        <br>
+        <a href="{% url 'homepg' %}" class="btn btn-warning">Home page</a>
         {% if messages %}
             {% for msg in messages %}
                 <small {% if msg.tags %} class='{{msg.tags}}' {% endif %}> <h4>{{msg}}</h4></small>

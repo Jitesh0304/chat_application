@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/my.css' %}">
+    <title>Succesfull</title>
+</head>
+{% comment %} <body> {% endcomment %}
+    <body style="background-image: url('{% static 'image/wal_image.jpg' %}'); background-position: center; 
+                                                                    background-repeat: no-repeat;">
+    <h2>Create group </h2>
+    
+    <form action="" method="POST" novalidate>
+        {% csrf_token %}
+        {% for fm in FORM %}
+        <div class="form-group col-3">
+            {{fm.label_tag}} <br>{{fm}} {{fm.errors | striptags}}
+        </div> <br>
+        {% endfor %}
+        <input type="submit" value="Create group" class="btn btn-warning">
+    </form>
+
+    {% if GroupName %}
+        {% if GroupName != None %}
+            <h3>Succesfully you have created a new group... {{GroupName}}</h3>
+        {% endif %}
+    {% comment %} {% else %}
+        <h3>Wrong request ......</h3> {% endcomment %}
+    {% endif %}
+    <br>
+    <a href="{% url 'profile' %}" class="btn btn-primary">Back</a>
+</body>
+</html>

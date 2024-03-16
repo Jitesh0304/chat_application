@@ -11,7 +11,7 @@
 
     <textarea name="" id="chat-display" cols="100" rows="20">
         {% for chat in chats %}
-            {{chat.content}}
+            {{chat.senduser.username}}:{{chat.content}}
         {% endfor %}
     </textarea><br>
     <input type="text" name="" id="chat-input"><br>
